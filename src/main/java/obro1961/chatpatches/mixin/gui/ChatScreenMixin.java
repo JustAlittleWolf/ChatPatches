@@ -28,6 +28,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import obro1961.chatpatches.ChatPatches;
 import obro1961.chatpatches.accessor.ChatHudAccessor;
+import obro1961.chatpatches.accessor.ChatScreenAccessor;
 import obro1961.chatpatches.config.ChatSearchSetting;
 import obro1961.chatpatches.config.Config;
 import obro1961.chatpatches.gui.MenuButtonWidget;
@@ -69,7 +70,7 @@ import static obro1961.chatpatches.util.SharedVariables.FABRIC_LOADER;
  */
 @Environment(EnvType.CLIENT)
 @Mixin(ChatScreen.class)
-public abstract class ChatScreenMixin extends Screen {
+public abstract class ChatScreenMixin extends Screen implements ChatScreenAccessor {
 	// search text
 	@Unique private static final String SUGGESTION = Text.translatable("text.chatpatches.search.suggestion").getString();
 	@Unique private static final Text SEARCH_TOOLTIP = Text.translatable("text.chatpatches.search.desc");
@@ -790,5 +791,14 @@ public abstract class ChatScreenMixin extends Screen {
 		});
 
 		return generated;
+	}
+
+	/**
+	 * Resets the message draft, used in {@link ScreenMixin#clearMessageDraft}
+	 * to only do this when the user closes the ChatScreen.
+	 */
+	@Unique
+	public void chatPatches$clearMessageDraft() {
+		chatField.setText("");
 	}
 }

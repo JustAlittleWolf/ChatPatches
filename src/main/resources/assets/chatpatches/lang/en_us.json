@@ -84,6 +84,8 @@
     "text.chatpatches.desc.searchDrafting": "Should any text in the search field persist after closing and reopening the chat?",
     "text.chatpatches.desc.hideSearchButton": "Should the search button be hidden? Note that this disables all search functionality.",
     "text.chatpatches.desc.vanillaClearing": "Should chat messages clear after leaving a world/server like vanilla? Note this completely erases both the chat and chat log.",
+    "text.chatpatches.desc.onlyInvasiveDrafting": "Should the text in the chat field only persist when chat is closed unexpectedly? For example when chat is closed by the server opening a GUI, the player is moved to another dimension, or the player dies.",
+    "text.chatpatches.onlyInvasiveDrafting": "Only invasive drafting toggle",
 
     "text.chatpatches.copyReplyFormat": "Reply text format",
     "text.chatpatches.copyColor": "Message selection color",

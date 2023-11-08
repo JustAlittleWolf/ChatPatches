@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 
 plugins {
-	id "fabric-loom" version "1.3-SNAPSHOT"
+	id "fabric-loom" version "1.4-SNAPSHOT"
 	id "maven-publish"
 	// todo: use https://github.com/modmuss50/mod-publish-plugin when more fleshed out
 	id "com.modrinth.minotaur" version "2.+"
@@ -20,10 +20,10 @@ def changelogText = "Changelog could not be found... 😬"
 def noPublish = project.hasProperty("noPublish") ? Boolean.parseBoolean(project.getProperty("noPublish")) : false
 
 repositories {
-  	mavenCentral()
+	mavenCentral()
 
-	maven { url "https://jitpack.io" } // MixinExtras
-
+	maven { url "https://maven.quiltmc.org/repository/release/" } // Quilt
+	//maven { url "https://jitpack.io" } // MixinExtras
 	maven { url "https://maven.terraformersmc.com/releases/" } // Mod Menu
 	maven { url "https://maven.isxander.dev/releases" } // YACL
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" } // temporary fix for a fix for YACL (twelvemonkeys imageio)
@@ -35,8 +35,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:$project.loader"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:$project.api"
 
-	// Jar-In-Jar, apply annotation processor, and add MixinExtras
-	include(annotationProcessor( implementation("com.github.LlamaLad7:MixinExtras:$project.mixin_extras") ))
+	// Jar-In-Jar, add MixinExtras, and apply annotation processor
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:$project.mixin_extras")))
 
 	modImplementation "com.terraformersmc:modmenu:$project.modmenu"
 	modImplementation "dev.isxander.yacl:yet-another-config-lib-fabric:$project.yacl"
@@ -72,10 +72,10 @@ dependencies {
 			}
 
 			println( String.format("\t-> %s integration '%s' with '%s' %s",
-				enabled ? "Loaded" : "Skipped",
-				name,
-				src,
-				(func != "modImplementation" ? "using method '$func'" : "")
+					enabled ? "Loaded" : "Skipped",
+					name,
+					src,
+					(func != "modImplementation" ? "using method '$func'" : "")
 			))
 
 			++all
@@ -99,10 +99,10 @@ processResources {
 	if( changelog.exists() ) {
 		// replaces github issue numbers with links and fills out some variables
 		file("changelog.md").text = changelog.text
-			.replaceAll("##(\\d+)", "[#\$1](https://www.github.com/mrbuilder1961/ChatPatches/issues/\$1)")
-			.replaceAll("\\\$\\{version}", version.toString())
-			.replaceAll("\\\$\\{targets}", targets.replaceAll(",", ", "))
-			.replaceAll("\\\$\\{loaders}", loaders.split(",").collect { it.capitalize() }.join(", "))
+				.replaceAll("##(\\d+)", "[#\$1](https://www.github.com/mrbuilder1961/ChatPatches/issues/\$1)")
+				.replaceAll("\\\$\\{version}", version.toString())
+				.replaceAll("\\\$\\{targets}", targets.replaceAll(",", ", "))
+				.replaceAll("\\\$\\{loaders}", loaders.split(",").collect { it.capitalize() }.join(", "))
 
 
 		// hackily gets the first changelog entry
